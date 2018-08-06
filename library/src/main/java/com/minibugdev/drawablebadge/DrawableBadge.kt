@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.text.TextPaint
+import android.view.Gravity
 
 class DrawableBadge private constructor(val context: Context,
 					@ColorInt val textColor: Int,
@@ -31,10 +32,13 @@ class DrawableBadge private constructor(val context: Context,
 		@ColorInt private var badgeBorderColor: Int? = null
 		private var badgeBorderSize: Float? = null
 		private var badgeSize: Float? = null
-		private var badgePosition: BadgePosition? = null
+		private var badgeGravity: Int? = null
 		private var bitmap: Bitmap? = null
 		private var isShowBorder: Boolean? = null
 		private var maximumCounter: Int? = null
+
+		@Deprecated("Move to Gravity")
+		private var badgePosition: BadgePosition? = null
 
 		private fun createBitmapFromDrawable(drawable: Drawable): Bitmap {
 			val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
@@ -77,7 +81,10 @@ class DrawableBadge private constructor(val context: Context,
 
 		fun badgeSize(@DimenRes badgeSize: Int) = apply { this.badgeSize = context.resources.getDimensionPixelOffset(badgeSize).toFloat() }
 
+		@Deprecated("Move to Gravity")
 		fun badgePosition(badgePosition: BadgePosition) = apply { this.badgePosition = badgePosition }
+
+		fun badgeGravity(badgeGravity: Int) = apply { this.badgeGravity = badgeGravity }
 
 		fun showBorder(isShowBorder: Boolean) = apply { this.isShowBorder = isShowBorder }
 
@@ -91,6 +98,7 @@ class DrawableBadge private constructor(val context: Context,
 			if (badgeBorderColor == null) badgeBorderColor(R.color.default_badge_border_color)
 			if (badgeBorderSize == null) badgeBorderSize(R.dimen.default_badge_border_size)
 			if (badgePosition == null) badgePosition(BadgePosition.TOP_RIGHT)
+			if (badgeGravity == null) badgeGravity(Gravity.TOP or Gravity.END)
 			if (isShowBorder == null) showBorder(true)
 			if (maximumCounter == null) maximumCounter(DrawableBadge.MAXIMUM_COUNT)
 
